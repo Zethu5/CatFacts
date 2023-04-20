@@ -39,8 +39,4 @@ resource "google_container_cluster" "cluster" {
     initial_node_count = 2
     autoscaling = false
   }
-
-  cluster_autoscaling = {
-      enabled = false
-  }
 }
