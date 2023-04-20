@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Get cluster info
+      - name: install gke-gcloud-auth-plugin
         run: |
           gcloud components install gke-gcloud-auth-plugin
 
