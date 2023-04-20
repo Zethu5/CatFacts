@@ -19,6 +19,7 @@ jobs:
         run: terraform init
 
       - name: Plan Terraform
+        working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform plan
 
       - name: Apply Terraform changes - Creating GKE cluster
