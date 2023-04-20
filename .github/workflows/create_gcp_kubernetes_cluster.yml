@@ -54,5 +54,4 @@ jobs:
 
       - name: upload terraform file to bucket
         working-directory: terraform/create_gcp_kubernetes_cluster
-        run: gcloud storage cp --continue-on-error gs://catfacts_terraform_state_file/terraform.tfstate terraform.tfstate
         run: gcloud storage cp --continue-on-error terraform.tfstate gs://catfacts_terraform_state_file/
