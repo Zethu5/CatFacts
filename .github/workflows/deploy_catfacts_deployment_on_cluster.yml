@@ -1,4 +1,4 @@
-name: Terraform create GKE defualt cluster
+name: Terraform Deploy CatFacts Kubernetes Deployment
 
 on:
   workflow_dispatch:
