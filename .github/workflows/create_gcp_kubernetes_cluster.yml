@@ -6,24 +6,53 @@ on:
 jobs:
   apply:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: 'install gke-gcloud-auth-plugin'
+        run: 'gcloud components install gke-gcloud-auth-plugin'
+
+      - name: 'set project'
+        run: 'gcloud config set project catfacts-384312'
+
+      - name: 'set zone'
+        run: 'gcloud config set compute/zone europe-west1'
+
+      - name: 'set kubernetes context'
+        run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
+
+      - name: 'check if cluster already exists'
+        run: 'if [[ -z $(gcloud container clusters list --filter NAME=catfacts) ]]; echo ::set-env name=catfacts_cluster_online::false ; fi'
+
       - name: Set up Terraform
+        if: ${{ catfacts_cluster_online == false}}
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: "1.0.6"
 
       - name: Initialize Terraform
+        if: ${{ catfacts_cluster_online == false}}
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform init
 
       - name: Plan Terraform
+        if: ${{ catfacts_cluster_online == false}}
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform plan -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
 
       - name: Apply Terraform changes - Creating GKE cluster
+        if: ${{ catfacts_cluster_online == false}}
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
         
