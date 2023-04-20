@@ -19,11 +19,11 @@ jobs:
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform init
 
-      - name: Plan Terraform
-        working-directory: terraform/create_gcp_kubernetes_cluster
-        run: terraform plan
-        env: 
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      # - name: Plan Terraform
+      #   working-directory: terraform/create_gcp_kubernetes_cluster
+      #   run: terraform plan
+      #   env: 
+      #     GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_gcp_kubernetes_cluster
