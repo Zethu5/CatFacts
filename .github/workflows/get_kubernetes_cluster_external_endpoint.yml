@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  auth:
+  Info:
     runs-on: ubuntu-latest
     steps:
     - id: 'auth'
@@ -15,5 +15,14 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v1'
 
-    - name: 'Use gcloud CLI'
-      run: 'gcloud info'
+    - name: 'set project'
+      run: 'gcloud config set project catfacts-384312'
+
+      - name: 'set zone'
+      run: 'gcloud config set compute/zone europe-west1'
+
+      - name: 'set kubernetes context'
+      run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
+
+      -name: 'get endpoint'
+      run: 'kubectl cluster-info | head -1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
