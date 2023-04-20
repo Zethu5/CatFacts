@@ -4,7 +4,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  apply:
+  get_endpoint:
+    runs-on: ubuntu-latest
+    endpoint: ${{ steps.get_endpoint_step.outputs.endpoint }}
+    steps:
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: 'install gke-gcloud-auth-plugin'
+        run: 'gcloud components install gke-gcloud-auth-plugin'
+
+      - name: 'set project'
+        run: 'gcloud config set project catfacts-384312'
+
+      - name: 'set zone'
+        run: 'gcloud config set compute/zone europe-west1'
+
+      - name: 'set kubernetes context'
+        run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
+
+      - id: get_endpoint_step
+        name: 'get endpoint'
+        run: 'echo kubectl cluster-info | head -1 | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" >> $GITHUB_OUTPUT'
+    
+  set_deployment:    
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -21,9 +49,9 @@ jobs:
 
       - name: Plan Terraform
         working-directory: terraform/create_catfacts_kubernetes_deployment
-        run: terraform plan -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
+        run: terraform plan -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}' -var 'ENDPOINT=${{ needs.get_endpoint.outputs.endpoint }}'
 
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_catfacts_kubernetes_deployment
-        run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
+        run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}' -var 'ENDPOINT=${{ needs.get_endpoint.outputs.endpoint }}'
         

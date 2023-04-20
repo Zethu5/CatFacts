@@ -16,10 +16,12 @@ variable "GOOGLE_CREDENTIALS" {
   description = "Google Cloud Platform service account credentials"
 }
 
+variable "ENDPOINT" {
+  description = "Kubernetes cluster external endpoint"
+}
+
 provider "kubernetes" {
-  host             = google_container_cluster.cluster.endpoint
-  token            = data.google_client_config.current.access_token
-  cluster_ca_certificate = base64decode(google_container_cluster.cluster.master_auth[0].cluster_ca_certificate)
+  host             = var.ENDPOINT
 }
 
 provider "google" {
