@@ -48,6 +48,10 @@ jobs:
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
 
+      - name: test
+        working-directory: terraform/create_gcp_kubernetes_cluster
+        run: 'ls -la'
+
       - name: upload terraform file to bucket
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: gcloud storage cp --continue-on-error gs://catfacts_terraform_state_file/terraform.tfstate terraform.tfstate
