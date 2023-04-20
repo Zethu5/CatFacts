@@ -39,8 +39,7 @@ resource "google_container_cluster" "cluster" {
     initial_node_count = 2
   }
 
-  autoscaling {
-      min_node_count = 2
-      max_node_count = 3
+  cluster_autoscaling = {
+      enabled = false
   }
 }
