@@ -23,7 +23,7 @@ provider "google" {
 }
 
 resource "google_container_cluster" "cluster" {
-  name               = "catfacts1"
+  name               = "catfacts"
   location           = "europe-west1"
   remove_default_node_pool = false
   node_pool {
