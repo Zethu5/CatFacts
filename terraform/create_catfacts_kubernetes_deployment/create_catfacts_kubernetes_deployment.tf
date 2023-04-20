@@ -21,7 +21,7 @@ variable "ENDPOINT" {
 }
 
 provider "kubernetes" {
-  host             = var.ENDPOINT
+  host             = "https://${var.ENDPOINT}"
 }
 
 provider "google" {
