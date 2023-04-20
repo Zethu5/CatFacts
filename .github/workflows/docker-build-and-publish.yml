@@ -2,9 +2,15 @@ name: Docker build and publish image
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - 'catfacts/*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - 'facts/*'
     
 jobs:
   push_to_registry:
