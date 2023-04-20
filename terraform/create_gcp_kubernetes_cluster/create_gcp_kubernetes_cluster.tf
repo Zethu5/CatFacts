@@ -36,7 +36,7 @@ resource "google_container_cluster" "cluster" {
       disk_type    = "pd-standard"
     }
 
-    initial_node_count = 3
+    initial_node_count = 2
     autoscaling = false
   }
 }
