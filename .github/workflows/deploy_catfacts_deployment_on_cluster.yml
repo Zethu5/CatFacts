@@ -31,7 +31,7 @@ jobs:
 
       - id: get_endpoint_step
         name: 'get endpoint'
-        run: 'kubectl cluster-info | head -1 | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" >> $GITHUB_OUTPUT'
+        run: 'echo endpoint=$(kubectl cluster-info | head -1 | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}") >> $GITHUB_OUTPUT'
     
   set_deployment:    
     needs: get_endpoint
