@@ -1,40 +1,17 @@
-name: Get Cluster External Endpoint
-
+name: Get cluster info
 on:
   workflow_dispatch:
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: update apt
-        run: |
-          sudo apt-get update
-        
-      - name: install gke-gcloud-auth-plugin
-        run: |
-          sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: catfacts-384312
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-
-      - name: Configure kubectl
-        run: |
-          gcloud container clusters get-credentials catfacts --region europe-west1
-
-      - name: Get cluster info
-        run: |
-          kubectl cluster-info | head -1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
+    - uses: actions/checkout@master
+    - name: kubectl - Google Cloud GKE cluster.
+      uses: ameydev/gke-kubectl-action@master
+      env:
+        PROJECT_ID: catfacts-384312
+        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        CLUSTER_NAME: catfacts
+        ZONE_NAME: europe-west1
+      with:
+        args: cluster-info | head -1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
