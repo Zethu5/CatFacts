@@ -40,11 +40,6 @@ jobs:
         id: check_cluster_online
         run: if [[ -z $(gsutil -q stat gs://catfacts_terraform_state_file/terraform.tfstate) ]] ; then echo "cluster_online=true" >> "$GITHUB_OUTPUT"; else echo "cluster_online=false" >> "$GITHUB_OUTPUT" ; fi
 
-      - name: test2
-        id: test22222
-        working-directory: terraform/create_gcp_kubernetes_cluster
-        run: echo "${{ steps.check_cluster_online.outputs.cluster_online }}"
-
       - name: get bucket terraform state file
         id: download_tfstate_file_from_gcloud_storage
         if: steps.check_cluster_online.outputs.cluster_online == 'true'
@@ -58,10 +53,6 @@ jobs:
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
-
-      - name: test
-        working-directory: terraform/create_gcp_kubernetes_cluster
-        run: 'ls -la'
 
       - name: upload terraform file to bucket
         working-directory: terraform/create_gcp_kubernetes_cluster
