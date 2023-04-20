@@ -29,4 +29,4 @@ jobs:
 
       - name: Get cluster info
         run: |
-          kubectl cluster-info
+          kubectl cluster-info | head -1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
