@@ -18,5 +18,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+
+      - name: Run command in create_gcp_kubernetes_cluster directory
+        working-directory: myapp
+
       - name: Apply Terraform changes
-        run: terraform apply -auto-approve ./terraform/create_gcp_kubernetes_cluster.tf
+        run: terraform apply -auto-approve
