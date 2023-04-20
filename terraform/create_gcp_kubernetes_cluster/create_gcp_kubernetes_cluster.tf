@@ -17,10 +17,6 @@ provider "google" {
   region  = "eu-west1"
 }
 
-data "github_secret" "GCP_CREDENTIALS" {
-  secret_name = "GCP_CREDENTIALS"
-}
-
 resource "google_container_cluster" "cluster" {
   name               = "catfacts"
   location           = "eu-west1"
