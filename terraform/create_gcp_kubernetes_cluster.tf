@@ -1,3 +1,8 @@
+terraform {
+  required_version = ">= 1.0"
+  source = "github.com/Zethu5/CatFacts"
+}
+
 provider "google" {
   project = "catfacts-384312"
   region  = "eu-west1"
