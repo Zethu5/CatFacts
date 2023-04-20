@@ -1,17 +1,13 @@
-name: Get cluster info
-on:
-  workflow_dispatch:
-jobs:
-  build:
-    runs-on: ubuntu-latest
+job:
+  job_id:
     steps:
-    - uses: actions/checkout@master
-    - name: kubectl - Google Cloud GKE cluster.
-      uses: ameydev/gke-kubectl-action@master
-      env:
-        PROJECT_ID: catfacts-384312
-        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-        CLUSTER_NAME: catfacts
-        ZONE_NAME: europe-west1
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
       with:
-        args: cluster-info | head -1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
