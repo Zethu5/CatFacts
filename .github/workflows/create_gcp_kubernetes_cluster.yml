@@ -9,8 +9,8 @@ jobs:
     # outputs:
     #   catfacts_cluster_online: ${{ steps.check_cluster_online.outputs.catfacts_cluster_online_status }}
     steps:
-      # - name: Check out the repo
-      #   uses: actions/checkout@v3
+      - name: Check out the repo
+        uses: actions/checkout@v3
 
       # - id: 'auth'
       #   uses: 'google-github-actions/auth@v1'
