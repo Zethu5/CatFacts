@@ -43,7 +43,7 @@ jobs:
         run: if [[ -z $(gsutil -q stat gs://catfacts_terraform_state_file/terraform.tfstate) ]] ; then echo "::set-output name=cluster_online::false"; else echo "::set-output name=cluster_online::true" ; fi
 
       - name: get bucket terraform state file
-        if: steps.check_cluster_online.outputs.cluster_online == true
+        if: steps.check_cluster_online.outputs.cluster_online == "true"
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: gcloud storage cp --continue-on-error gs://catfacts_terraform_state_file/terraform.tfstate terraform.tfstate
 
