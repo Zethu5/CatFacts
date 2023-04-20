@@ -7,6 +7,9 @@ jobs:
   deploy_app:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
@@ -30,14 +33,11 @@ jobs:
       - name: 'test1'
         run: 'ls -laR'
 
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
       - name: 'test2'
-        run: 'ls -laR'
+        run: 'cat *.json'
 
       - name: 'deploy catfacts deployment'
-        run: 'kubectl apply -f kubernetes_deployments/catfacts_deployment.yaml --kubeconfig kube'
+        run: 'kubectl apply -f kubernetes_deployments/catfacts_deployment.yaml --kubeconfig *.json'
 
       - name: 'deploy catfacts service'
         run: 'kubectl apply -f kubernetes_services/catfacts_service.yaml'
