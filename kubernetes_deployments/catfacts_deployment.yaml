@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catfacts
+spec:
+  selector:
+    matchLabels:
+      app: catfacts
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: catfacts
+    spec:
+      containers:
+      - name: catfacts
+        image: zethu5/catfacts
+        ports:
+        - containerPort: 7777

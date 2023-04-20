@@ -4,10 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_endpoint:
+  deploy app:
     runs-on: ubuntu-latest
-    outputs:
-      endpoint: ${{ steps.get_endpoint_step.outputs.endpoint }}
     steps:
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
@@ -29,31 +27,9 @@ jobs:
       - name: 'set kubernetes context'
         run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
 
-      - id: get_endpoint_step
-        name: 'get endpoint'
-        run: 'echo endpoint=$(kubectl cluster-info | head -1 | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}") >> $GITHUB_OUTPUT'
-    
-  set_deployment:    
-    needs: get_endpoint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
+      - name: 'deploy catfacts deployment'
+        run: 'kubectl apply -f kubernetes_deployments/catfacts_deployment.yaml'
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: "1.0.6"
-
-      - name: Initialize Terraform
-        working-directory: terraform/create_catfacts_kubernetes_deployment
-        run: terraform init
-
-      - name: Plan Terraform
-        working-directory: terraform/create_catfacts_kubernetes_deployment
-        run: terraform plan -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}' -var 'ENDPOINT=${{ needs.get_endpoint.outputs.endpoint }}'
-
-      - name: Apply Terraform changes - Creating GKE cluster
-        working-directory: terraform/create_catfacts_kubernetes_deployment
-        run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}' -var 'ENDPOINT=${{ needs.get_endpoint.outputs.endpoint }}'
+      - name: 'deploy catfacts service'
+        run: 'kubectl apply -f kubernetes_services/catfacts_service.yaml'
         
