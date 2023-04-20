@@ -15,6 +15,7 @@ terraform {
 provider "google" {
   project = "catfacts-384312"
   region  = "eu-west1"
+  credentials = var.GOOGLE_CREDENTIALS
 }
 
 resource "google_container_cluster" "cluster" {
