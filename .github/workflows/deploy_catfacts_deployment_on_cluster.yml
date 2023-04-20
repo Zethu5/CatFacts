@@ -37,7 +37,7 @@ jobs:
         run: 'cat *.json'
 
       - name: 'deploy catfacts deployment'
-        run: 'kubectl apply -f kubernetes_deployments/catfacts_deployment.yaml --kubeconfig *.json'
+        run: 'kubectl apply -f kubernetes_deployments/catfacts_deployment.yaml'
 
       - name: 'deploy catfacts service'
         run: 'kubectl apply -f kubernetes_services/catfacts_service.yaml'
