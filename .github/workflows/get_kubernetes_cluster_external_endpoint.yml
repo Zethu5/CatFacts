@@ -10,6 +10,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Get cluster info
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
@@ -26,13 +30,7 @@ jobs:
       - name: Configure kubectl
         run: |
           gcloud container clusters get-credentials catfacts --region europe-west1
-        with:
-          project_id: catfacts-384312
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Get cluster info
         run: |
           kubectl cluster-info | head -1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
-        with:
-          project_id: catfacts-384312
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
