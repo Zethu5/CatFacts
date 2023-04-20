@@ -10,6 +10,9 @@ terraform {
       version = "~> 4.11.0"
     }
   }
+  environment_variables = {
+    GOOGLE_CREDENTIALS = var.GOOGLE_CREDENTIALS
+  }
 }
 
 variable "GOOGLE_CREDENTIALS" {
@@ -19,7 +22,7 @@ variable "GOOGLE_CREDENTIALS" {
 provider "google" {
   project = "catfacts-384312"
   region  = "eu-west1"
-  credentials = var.GOOGLE_CREDENTIALS
+  credentials = var.GCP_CREDENTIALS
 }
 
 resource "google_container_cluster" "cluster" {
