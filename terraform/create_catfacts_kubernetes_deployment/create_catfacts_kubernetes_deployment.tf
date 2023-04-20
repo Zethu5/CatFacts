@@ -17,7 +17,7 @@ variable "GOOGLE_CREDENTIALS" {
 }
 
 provider "kubernetes" {
-  host             = "catfacts"
+  host             = google_container_cluster.cluster.endpoint
 }
 
 provider "google" {
