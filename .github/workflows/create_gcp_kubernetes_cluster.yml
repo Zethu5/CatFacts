@@ -6,32 +6,26 @@ on:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    # outputs:
-    #   catfacts_cluster_online: ${{ steps.check_cluster_online.outputs.catfacts_cluster_online_status }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      # - id: 'auth'
-      #   uses: 'google-github-actions/auth@v1'
-      #   with:
-      #     credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-      # - name: 'Set up Cloud SDK'
-      #   uses: 'google-github-actions/setup-gcloud@v1'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
 
-      # - name: 'install gke-gcloud-auth-plugin'
-      #   run: 'gcloud components install gke-gcloud-auth-plugin'
+      - name: 'install gke-gcloud-auth-plugin'
+        run: 'gcloud components install gke-gcloud-auth-plugin'
 
-      # - name: 'set project'
-      #   run: 'gcloud config set project catfacts-384312'
+      - name: 'set project'
+        run: 'gcloud config set project catfacts-384312'
 
-      # - name: 'set zone'
-      #   run: 'gcloud config set compute/zone europe-west1'
-
-      # - name: 'check if cluster already exists'
-      #   id: check_cluster_online
-      #   run: 'if [[ -z $(gcloud container clusters list --filter NAME=catfacts) ]]; echo "catfacts_cluster_online_status=false" >> $GITHUB_OUTPUT; fi'
+      - name: 'set zone'
+        run: 'gcloud config set compute/zone europe-west1'
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
@@ -42,6 +36,10 @@ jobs:
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform init
 
+      - name: get bucket terraform file
+        working-directory: terraform/create_gcp_kubernetes_cluster
+        run: gcloud storage cp --continue-on-error gs://catfacts_terraform_state_file/terraform.tfstate terraform.tfstate
+
       - name: Plan Terraform
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform plan -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
@@ -49,4 +47,8 @@ jobs:
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
-        
+
+      - name: upload terraform file to bucket
+        working-directory: terraform/create_gcp_kubernetes_cluster
+        run: gcloud storage cp --continue-on-error gs://catfacts_terraform_state_file/terraform.tfstate terraform.tfstate
+        run: gcloud storage cp --continue-on-error terraform.tfstate gs://catfacts_terraform_state_file/
