@@ -28,4 +28,6 @@ jobs:
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform apply -auto-approve
+        env: 
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         
