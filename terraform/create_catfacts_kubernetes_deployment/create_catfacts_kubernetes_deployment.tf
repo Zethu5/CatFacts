@@ -12,6 +12,10 @@ terraform {
   }
 }
 
+variable "GOOGLE_CREDENTIALS" {
+  description = "Google Cloud Platform service account credentials"
+}
+
 provider "kubernetes" {
   load_config_file = false
   host             = "catfacts"
