@@ -7,6 +7,9 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -15,9 +18,8 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
+      - name: Plan Terraform
+        run: terraform plan
 
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_gcp_kubernetes_cluster
