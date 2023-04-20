@@ -12,6 +12,10 @@ terraform {
   }
 }
 
+variable "GOOGLE_CREDENTIALS" {
+  description = "Google Cloud Platform service account credentials"
+}
+
 provider "google" {
   project = "catfacts-384312"
   region  = "eu-west1"
