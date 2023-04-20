@@ -10,6 +10,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: update apt
+        run: |
+          sudo apt-get update
         
       - name: install gke-gcloud-auth-plugin
         run: |
