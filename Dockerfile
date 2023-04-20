@@ -1,3 +1,4 @@
+FROM python
 EXPOSE 7777
 WORKDIR /app 
 COPY requirements.txt /app
