@@ -25,11 +25,5 @@ provider "google" {
 resource "google_container_cluster" "cluster" {
   name               = "catfacts"
   location           = "europe-west1"
-  remove_default_node_pool = false
-  initial_node_count = 2
-
-  node_config {
-    machine_type = "e2-small"
-    disk_size_gb = 10
-  }
+  initial_node_count = 1
 }
