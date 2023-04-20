@@ -15,6 +15,7 @@ terraform {
 provider "kubernetes" {
   load_config_file = false
   host             = "catfacts"
+  credentials      = var.GOOGLE_CREDENTIALS
 }
 
 provider "google" {
