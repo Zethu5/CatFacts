@@ -16,6 +16,7 @@ jobs:
           terraform_version: "1.0.6"
 
       - name: Initialize Terraform
+        working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform init
 
       - name: Plan Terraform
