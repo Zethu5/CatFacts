@@ -1,5 +1,8 @@
 name: Get kubernetes cluster endpoint
 
+on:
+  workflow_dispatch:
+  
 job:
   job_id:
     steps:
