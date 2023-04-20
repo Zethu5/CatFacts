@@ -29,8 +29,8 @@ jobs:
       - name: 'set zone'
         run: 'gcloud config set compute/zone europe-west1'
 
-      - name: 'set kubernetes context'
-        run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
+      # - name: 'set kubernetes context'
+      #   run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
 
       - name: 'check if cluster already exists'
         id: check_cluster_online
