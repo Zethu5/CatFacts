@@ -26,4 +26,5 @@ resource "google_container_cluster" "cluster" {
   name               = "catfacts"
   location           = "europe-west1"
   remove_default_node_pool = false
+  initial_node_count = 2
 }
