@@ -42,6 +42,10 @@ jobs:
         id: check_cluster_online
         run: if [[ -z $(gsutil -q stat gs://catfacts_terraform_state_file/terraform.tfstate) ]] ; then echo "::set-output name=cluster_online::0" >> "$GITHUB_OUTPUT"; else echo "::set-output name=cluster_online::1" >> "$GITHUB_OUTPUT" ; fi
 
+      - name: test2
+        working-directory: terraform/create_gcp_kubernetes_cluster
+        run: 'echo ===${{ steps.check_cluster_online.outputs.cluster_online }}==='
+
       - name: get bucket terraform state file
         if: steps.check_cluster_online.outputs.cluster_online == '1'
         working-directory: terraform/create_gcp_kubernetes_cluster
