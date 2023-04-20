@@ -1,0 +1,26 @@
+name: Get Cluster External Endpoint
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: catfacts-384312
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials catfacts --region europe-west1
+
+      - name: Get cluster info
+        run: |
+          kubectl cluster-info
