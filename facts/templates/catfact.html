@@ -1,0 +1,31 @@
+
+<style>
+    .center {
+        margin: auto;
+        width: 50%;
+        padding: 10px;
+    }
+
+    .centerImage {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 20%;
+      }
+</style>
+
+{% if fact %}
+
+<div class='center'>
+    <h1>Cat Fact:</h1>
+</div>
+
+<div class='center'>
+    <h2 >{{ fact }}</h2>
+</div>
+
+{% else %}
+<div>
+    <img class='centerImage' src='https://i.imgur.com/dxcJk7c.png'>
+</div>
+{% endif %}
