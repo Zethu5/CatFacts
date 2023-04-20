@@ -6,7 +6,8 @@ on:
 jobs:
   get_endpoint:
     runs-on: ubuntu-latest
-    endpoint: ${{ steps.get_endpoint_step.outputs.endpoint }}
+    outputs:
+      endpoint: ${{ steps.get_endpoint_step.outputs.endpoint }}
     steps:
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
