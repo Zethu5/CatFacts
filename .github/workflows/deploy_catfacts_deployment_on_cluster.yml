@@ -27,6 +27,9 @@ jobs:
       - name: 'set kubernetes context'
         run: 'gcloud container clusters get-credentials catfacts --zone europe-west1'
 
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
       - name: 'deploy catfacts deployment'
         run: 'kubectl apply -f kubernetes_deployments/catfacts_deployment.yaml'
 
