@@ -19,11 +19,14 @@ jobs:
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform init
 
+      - name: Export Google creds as env var
+        run: export TF_VAR_GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}
+
       - name: Plan Terraform
         working-directory: terraform/create_gcp_kubernetes_cluster
-        run: terraform plan -input=false -var GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}
+        run: terraform plan -input=false
 
       - name: Apply Terraform changes - Creating GKE cluster
         working-directory: terraform/create_gcp_kubernetes_cluster
-        run: terraform apply -auto-approve -input=false -var GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}
+        run: terraform apply -auto-approve -input=false
         
