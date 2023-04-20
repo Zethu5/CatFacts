@@ -2,9 +2,10 @@ name: Get kubernetes cluster endpoint
 
 on:
   workflow_dispatch:
-  
-job:
-  job_id:
+
+jobs:
+  auth:
+    runs-on: ubuntu-latest
     steps:
     - id: 'auth'
       uses: 'google-github-actions/auth@v1'
