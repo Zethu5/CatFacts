@@ -3,8 +3,8 @@ provider "google" {
   region  = "eu-west1"
 }
 
-data "github_secret" "GOOGLE_CREDENTIALS" {
-  secret_name = "GOOGLE_CREDENTIALS"
+data "github_secret" "GCP_CREDENTIALS" {
+  secret_name = "GCP_CREDENTIALS"
 }
 
 resource "google_container_cluster" "cluster" {
