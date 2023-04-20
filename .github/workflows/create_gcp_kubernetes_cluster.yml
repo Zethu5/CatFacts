@@ -6,8 +6,6 @@ on:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -36,23 +34,23 @@ jobs:
         run: 'if [[ -z $(gcloud container clusters list --filter NAME=catfacts) ]]; echo ::set-env name=catfacts_cluster_online::false ; fi'
 
       - name: Set up Terraform
-        if: ${{ catfacts_cluster_online == false}}
+        if: $catfacts_cluster_online == false
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: "1.0.6"
 
       - name: Initialize Terraform
-        if: ${{ catfacts_cluster_online == false}}
+        if: $catfacts_cluster_online == false
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform init
 
       - name: Plan Terraform
-        if: ${{ catfacts_cluster_online == false}}
+        if: $catfacts_cluster_online == false
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform plan -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
 
       - name: Apply Terraform changes - Creating GKE cluster
-        if: ${{ catfacts_cluster_online == false}}
+        if: $catfacts_cluster_online == false
         working-directory: terraform/create_gcp_kubernetes_cluster
         run: terraform apply -auto-approve -input=false -var 'GOOGLE_CREDENTIALS=${{ secrets.GCP_CREDENTIALS }}'
         
