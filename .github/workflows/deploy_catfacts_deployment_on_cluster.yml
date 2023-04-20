@@ -2,6 +2,12 @@ name: Terraform Deploy CatFacts Kubernetes Deployment
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Terraform create GKE defualt cluster"]
+    branches:
+      - main
+    types:
+      - completed
 
 jobs:
   deploy_app:
