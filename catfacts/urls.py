@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path
 from facts.views import catfact
 
-#test
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('catfact/', catfact)
